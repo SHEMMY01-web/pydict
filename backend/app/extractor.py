@@ -126,15 +126,24 @@ def extract_builtins():
         elif is_cls and ("Error" in name or "Exception" in name or "Warning" in name):
             simple_def = f"`{name}` is a standard Python built-in exception/warning class. It gets raised when this specific issue occurs, and can be caught and handled with `try / except {name}:`."
             example_title = f"Handling {name}"
-            example_code = f"# Real-world: Handling {name}\\ntry:\\n    # Protected code block\\n    pass\\nexcept {name} as err:\\n    print(f'Caught {name}: {{err}}')"
+            example_code = f"""# Real-world: Handling {name}
+try:
+    # Protected code block
+    pass
+except {name} as err:
+    print(f'Caught {name}: {{err}}')"""
         elif is_cls:
             simple_def = f"`{name}` is a built-in Python type (like a blueprint) that you can use to create {name.lower()} objects. You don't need to import anything — it's always available."
             example_title = f"Using {name}"
-            example_code = f"# Creating and inspecting {name}\\ninstance = {name}()\\nprint('Created:', instance)\\nprint('Type:', type(instance))"
+            example_code = f"""# Creating and inspecting {name}
+instance = {name}()
+print('Created:', instance)
+print('Type:', type(instance))"""
         else:
             simple_def = f"`{name}()` is a built-in function that comes with Python — no imports needed. {short_summary}"
             example_title = f"Using {name}()"
-            example_code = f"# Real-world usage of {name}\\nprint('Callable built-in:', {name})"
+            example_code = f"""# Real-world usage of {name}
+print('Callable built-in:', {name})"""
 
         gotchas = BUILTIN_GOTCHAS.get(name, [f"Standard {pos.lower()} available in all Python execution contexts without importing."])
         cross = CROSS_LANG_BUILTINS.get(name, {})

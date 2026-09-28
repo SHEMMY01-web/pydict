@@ -22,11 +22,25 @@ function renderFormattedDefinition(text) {
   });
 }
 
+function formatCode(codeStr) {
+  if (typeof codeStr !== 'string') return '';
+  // Convert any literal string \n into actual real newline characters
+  return codeStr
+    .replace(/\\r\\n/g, '\n')
+    .replace(/\\n/g, '\n')
+    .replace(/\\t/g, '    ');
+}
+
 function CleanCodeExample({ title, initialCode }) {
-  const [code, setCode] = useState(initialCode);
+  const [code, setCode] = useState(() => formatCode(initialCode));
   const [output, setOutput] = useState('');
   const [running, setRunning] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    setCode(formatCode(initialCode));
+    setOutput('');
+  }, [initialCode]);
 
   const handleRun = async () => {
     setRunning(true);
