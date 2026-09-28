@@ -24,8 +24,8 @@ export default function Navbar({
         >
           <span className="brand-icon-text">Py</span>
           <div className="brand-text-group">
-            <span className="brand-title">PyKtionary</span>
-            <span className="brand-badge">The free Python dictionary</span>
+            <span className="brand-title">PyDict</span>
+            <span className="brand-badge">The Python Dictionary</span>
           </div>
         </div>
 
@@ -36,7 +36,7 @@ export default function Navbar({
           title="Search entries (Ctrl+K or /)"
         >
           <Search size={15} />
-          <span className="search-placeholder-text">Search PyKtionary</span>
+          <span className="search-placeholder-text">Search PyDict</span>
           <span className="shortcut-kbd">⌘K</span>
         </button>
 

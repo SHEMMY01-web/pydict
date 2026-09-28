@@ -1,7 +1,7 @@
 {
-  "name": "PyKtionary — The Definitive Python Lexicon",
-  "short_name": "PyKtionary",
-  "description": "Wiktionary-style lexicon, syntax reference, and interactive WebAssembly playground for Python.",
+  "name": "PyDict — The Definitive Python Dictionary",
+  "short_name": "PyDict",
+  "description": "Encyclopedic lexicon, syntax reference, and interactive WebAssembly playground for Python.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#101418",

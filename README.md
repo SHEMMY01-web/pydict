@@ -1,72 +1,43 @@
-# 🐍 PyKtionary — The Python Lexicon
+# 🐍 PyDict — The Definitive Python Dictionary
 
-**PyKtionary** is an encyclopedic dictionary and linguistic reference for Python, modeled directly on the **Wiktionary** interface. It provides structured definitions, phonetic pronunciations, syntactic breakdowns, parameter specifications, version lineages, common pitfalls, cross-language analogies, and in-browser code execution.
+**PyDict** is an encyclopedic dictionary and interactive linguistic reference for Python. It provides structured definitions, phonetic pronunciations, plain-English conceptual breakdowns, syntactic signatures, parameter specifications, version lineages, common pitfalls, cross-language analogies, and live in-browser Python execution.
 
-The project consists of:
-1. **Web Application:** Built with React & Vite using the authentic Wikimedia Vector styling.
-2. **Mobile Application:** Built with React Native & Expo for iOS and Android, following the official mobile Wiktionary layout with 100% offline support.
-3. **Backend API:** Built with FastAPI & SQLite FTS5 for full-text indexing, linguistic polysemy, and version history.
+The project is architected as a high-performance web platform:
+1. **Web Application:** Built with React & Vite using a clean, distraction-free classical lexicographical reference interface.
+2. **Backend API:** Built with FastAPI & SQLite FTS5 for full-text search indexing, linguistic polysemy, and evolutionary version history.
+3. **Interactive Playground:** Powered by client-side WebAssembly (Pyodide) for real-time Python execution directly in the browser.
 
 ---
 
-## 📖 Wiktionary Anatomy
+## 📖 Dictionary Anatomy & Entry Structure
 
-Every Python symbol in PyKtionary follows the traditional Wiktionary article structure:
+Every Python symbol in PyDict follows a comprehensive, classical lexicographical article structure:
 
-* **Headword (`H1`):** Formatted in serif type (`Linux Libertine` / `Georgia`).
+* **Headword (`H1`):** Formatted in crisp scholarly serif typography (`Linux Libertine` / `Georgia`).
 * **Pronunciation & Audio:** International Phonetic Alphabet (IPA) transcription (e.g. `[ˈzaɪp]`, `[taɪp]`) with audio playback.
-* **Table of Contents:** Numbered navigation box to jump between sections.
+* **Table of Contents:** Numbered navigation panel to seamlessly jump between sections.
 * **Etymology & Origin:** Python version introduced, deprecation notices, and official PEP links.
-* **Part of Speech:** Heading (`Built-in function`, `Keyword`, `Metaclass`, `Protocol`, `Module`).
-* **Numbered Definitions (`1.`, `2.`, `3.`):** Each sense includes parenthetical linguistic context (e.g. `(programming, iterators)`) and a direct definition.
+* **Part of Speech:** Heading tags (`Built-in Function`, `Language Keyword`, `Metaclass`, `Protocol`, `Standard Library Class`).
+* **Numbered Definitions (`1.`, `2.`, `3.`):** Each sense includes parenthetical domain context (e.g. `(programming, iterators)`) and a direct definition.
+* **In Plain English:** A dedicated, beginner-friendly conceptual breakdown that demystifies complex terms with clear analogies.
 * **Parameters & Return Value:** Structured table of argument names, types, defaults, and return specifications.
-* **Code Examples:** Minimalist, readable code snippets with `Copy` and `Run` execution.
-* **Usage Notes:** Bulleted lists of edge cases, common bugs, and performance characteristics.
+* **Ample & Real-World Code Examples:** Practical, production-grade code snippets illustrating real-life use cases with one-click `Copy` and in-browser `Run` execution.
+* **Usage Notes & Gotchas:** Bulleted lists of edge cases, common bugs, and performance characteristics.
 * **Evolutionary Version History:** Chronological change logs tracking how terms developed across major Python releases.
-* **Translations:** Cross-language analogies mapping Python concepts to JavaScript, Rust, Go, C++, and Java.
-* **Zero Marketing Fluff:** Authoritative and scholarly without promotional banners, buzzwords, or unnecessary subtext.
-
----
-
-## 📱 Mobile App (React Native & Expo)
-
-The mobile app in [`mobile/`](file:///home/olaewevictor01/PY%20DICT/mobile) delivers a faithful mobile Wiktionary experience:
-
-* **100% Offline-Capable:** Pre-bundles all 221 Python definitions in [`offlineData.json`](file:///home/olaewevictor01/PY%20DICT/mobile/src/services/offlineData.json).
-* **Wiktionary Mobile Header:** Py logo monogram, "The free dictionary" tagline, random entry button, search trigger, and dark/light theme switcher.
-* **Read Tab:** Features the daily Python Word of the Day and categorized index.
-* **Search Tab:** Live filtering by term, keyword, or category with instant preview.
-* **Article Screen:** Complete Wiktionary layout with serif headword, IPA audio button, numbered senses, code snippets with copy action, parameter tables, gotchas, version timeline, and translations.
-* **Saved Tab:** Personal bookmarks list for rapid offline study and revision.
-* **Quiz Tab:** Scholarly multiple-choice vocabulary test with direct links back to dictionary entries.
-
-### Running the Mobile App
-
-```bash
-cd mobile
-
-# Install dependencies
-npm install
-
-# Start the Expo development server
-npx expo start
-
-# Open on specific platform:
-npx expo start --android   # Android Emulator / Device
-npx expo start --ios       # iOS Simulator / Device
-npx expo start --web       # Web browser preview
-```
+* **Cross-Language Equivalents:** Analogies mapping Python concepts to JavaScript, Rust, Go, and other languages.
+* **Zero Marketing Fluff:** Authoritative and scholarly without promotional banners, buzzwords, or distractions.
 
 ---
 
 ## 🌐 Web App (React + Vite)
 
-The web frontend in [`frontend/`](file:///home/olaewevictor01/PY%20DICT/frontend) features the authentic Wikimedia Vector layout:
+The web frontend in [`frontend/`](frontend) provides a fast, responsive reference experience:
 
-* **Typography:** `Linux Libertine`, `Georgia`, and serif headwords with classic Wikimedia blue links (`#3366cc`).
-* **Interactive WASM Execution:** Code examples can be executed in-browser via Pyodide without server-side overhead.
-* **Keyboard Shortcuts:** `⌘K` or `/` opens instant FTS5 search dialog.
-* **Dual Theme:** Native dark and light modes matching Wikimedia Vector styles.
+* **Scholarly Typography:** Clean hierarchy with serif headwords, monospace code pills, and accessible contrast.
+* **Interactive WASM Execution:** Code examples execute entirely in-browser via Pyodide without server-side overhead or security hazards.
+* **Instant Search:** `⌘K` or `/` opens a fast FTS5 search dialog with instant auto-complete.
+* **Dual Theme:** Native dark and light modes with seamless contrast.
+* **Offline PWA Support:** Built-in caching for fast offline reference.
 
 ### Running the Web App
 
@@ -82,11 +53,11 @@ Visit [http://127.0.0.1:5173](http://127.0.0.1:5173).
 
 ## ⚙️ Backend API (FastAPI + SQLite FTS5)
 
-The backend in [`backend/`](file:///home/olaewevictor01/PY%20DICT/backend) stores 221 comprehensive entries covering:
+The backend in [`backend/`](backend) stores 245+ comprehensive entries covering:
 * All 71 built-in functions
 * All 35 language keywords
-* 40+ special / dunder methods
-* 10 core standard library modules (`math`, `re`, `json`, `pathlib`, `datetime`, `random`, `sys`, `subprocess`, `typing`, `hashlib`)
+* 40+ special and dunder methods
+* Core standard library modules (`math`, `re`, `json`, `pathlib`, `datetime`, `random`, `sys`, `subprocess`, `typing`, `hashlib`)
 * Linguistic Polysemy (multiple numbered senses for `type`, `* / **`, `[]`, etc.)
 * Version Evolution Timelines (`zip`, `type`, `dict`, `gil`, `enumerate`)
 
@@ -104,7 +75,7 @@ Interactive documentation is available at [http://127.0.0.1:8000/docs](http://12
 
 ## 🚀 One-Click Launch
 
-Run the root startup script to start both Backend and Frontend concurrently:
+Run the startup script to launch both the backend and frontend concurrently:
 ```bash
 ./start.sh
 ```

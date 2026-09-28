@@ -36,7 +36,7 @@ print("Flattened matrix:", flattened)
     code: `# Walrus Operator (:=) - Introduced in Python 3.8 (PEP 572)
 # Avoid redundant calculations in conditions and loops
 
-data = "PyKtionary: The definitive Python lexicon"
+data = "PyDict: The definitive Python dictionary"
 
 # Assign and test in a single expression
 if (n := len(data)) > 20:
@@ -280,7 +280,7 @@ make_it_quack("just a string")
     name: 'Blank Python Scratchpad',
     entrySlug: null,
     description: 'Write, prototype, and execute arbitrary Python code directly in your browser.',
-    code: `# PyKtionary Interactive Python Scratchpad
+    code: `# PyDict Interactive Python Scratchpad
 # Powered by client-side WebAssembly (Pyodide Python 3.11)
 # Write any Python code below and press 'Run Code' or Ctrl+Enter
 
@@ -293,7 +293,7 @@ def calculate_primes(limit=50):
             primes.append(num)
     return primes
 
-print("PyKtionary WASM Python Environment")
+print("PyDict WASM Python Environment")
 print("Primes up to 50:", calculate_primes(50))
 `
   }

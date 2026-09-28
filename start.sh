@@ -4,7 +4,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 echo "=========================================="
-echo "🐍 Starting PyKtionary Full-Stack App..."
+echo "🐍 Starting PyDict Full-Stack App..."
 echo "=========================================="
 
 # 1. Start Backend
@@ -34,7 +34,7 @@ FRONTEND_PID=$!
 trap "kill $BACKEND_PID $FRONTEND_PID 2>/dev/null || true; exit" SIGINT SIGTERM
 
 echo ""
-echo "✨ PyKtionary is live!"
+echo "✨ PyDict is live!"
 echo "👉 Frontend: http://127.0.0.1:5173"
 echo "👉 API Docs: http://127.0.0.1:8000/docs"
 echo "Press Ctrl+C to terminate both servers."

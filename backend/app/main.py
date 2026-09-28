@@ -18,8 +18,8 @@ from .seed_data import seed_database
 from .extractor import extract_builtins
 
 app = FastAPI(
-    title="PyKtionary API",
-    description="The Wiktionary-style dictionary and reference engine for Python",
+    title="PyDict API",
+    description="The encyclopedic dictionary and interactive reference engine for Python",
     version="1.0.0"
 )
 
