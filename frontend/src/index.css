@@ -1,0 +1,1361 @@
+/* Wiktionary Design System for PyKtionary */
+:root {
+  --font-serif: 'Linux Libertine', 'Georgia', 'Times New Roman', serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Liberation Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+  /* Wikimedia Vector Light Palette */
+  --bg-primary: #f8f9fa;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f8f9fa;
+  --bg-header: #eaecf0;
+  --border-wiki: #a2a9b1;
+  --border-subtle: #c8ccd1;
+
+  --text-main: #202122;
+  --text-secondary: #54595d;
+  --text-muted: #72777d;
+
+  --link-color: #3366cc;
+  --link-hover: #447ff5;
+
+  /* Category indicator tones (subtle, non-distracting) */
+  --badge-bg: #f8f9fa;
+  --badge-border: #c8ccd1;
+  --badge-text: #202122;
+
+  --code-bg: #f8f9fa;
+  --code-border: #eaecf0;
+  --code-text: #202122;
+  --console-bg: #1e1e1e;
+  --console-text: #d4d4d4;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+}
+
+[data-theme='dark'] {
+  --bg-primary: #101418;
+  --bg-surface: #1e2329;
+  --bg-subtle: #242b33;
+  --bg-header: #2d3640;
+  --border-wiki: #485361;
+  --border-subtle: #39424e;
+
+  --text-main: #f8f9fa;
+  --text-secondary: #c8ccd1;
+  --text-muted: #8d97a5;
+
+  --link-color: #6998f5;
+  --link-hover: #8cb2ff;
+
+  --badge-bg: #2d3640;
+  --badge-border: #485361;
+  --badge-text: #f8f9fa;
+
+  --code-bg: #15191e;
+  --code-border: #2d3640;
+  --code-text: #e2e8f0;
+  --console-bg: #0c0f12;
+  --console-text: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  line-height: 1.6;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+}
+
+/* App Header */
+.navbar {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-wiki);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.navbar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.6rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: var(--text-main);
+}
+
+.brand-icon-text {
+  font-family: var(--font-serif);
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: var(--text-main);
+}
+
+.brand-badge {
+  font-size: 0.75rem;
+  font-family: var(--font-sans);
+  color: var(--text-muted);
+  margin-left: 6px;
+  font-weight: normal;
+}
+
+.search-trigger-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-wiki);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.85rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  width: 100%;
+  max-width: 360px;
+  transition: border-color 0.15s ease;
+}
+
+.search-trigger-btn:hover {
+  border-color: var(--link-color);
+  color: var(--text-main);
+}
+
+.shortcut-kbd {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 1px 5px;
+  border-radius: 2px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+}
+
+.nav-btn:hover {
+  color: var(--text-main);
+  background: var(--bg-subtle);
+}
+
+.nav-btn.active {
+  color: var(--link-color);
+  border-bottom-color: var(--link-color);
+  font-weight: 600;
+  background: transparent;
+}
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+}
+
+.icon-btn:hover {
+  background: var(--bg-subtle);
+  border-color: var(--border-subtle);
+  color: var(--text-main);
+}
+
+/* Layout */
+.main-layout {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 3rem 1.5rem;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 2rem;
+}
+
+.main-layout.single-column {
+  grid-template-columns: 1fr;
+  max-width: 980px;
+}
+
+/* Sidebar / Wiktionary Table of Contents */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sidebar-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+}
+
+.sidebar-title {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.category-nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.85rem;
+  color: var(--link-color);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.category-nav-item:hover {
+  text-decoration: underline;
+  background: var(--bg-subtle);
+}
+
+.category-nav-item.active {
+  font-weight: bold;
+  color: var(--text-main);
+  background: var(--bg-subtle);
+}
+
+.category-pill-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.version-select {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+/* Catalog View */
+.controls-bar {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.search-input-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.4rem 0.8rem 0.4rem 2rem;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  font-size: 0.85rem;
+  border-radius: var(--radius-sm);
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--link-color);
+}
+
+.search-icon-inside {
+  position: absolute;
+  left: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+/* Entry Cards Grid */
+.entries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 0.85rem;
+}
+
+.entry-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.15s ease;
+}
+
+.entry-card:hover {
+  border-color: var(--border-wiki);
+}
+
+.entry-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.entry-card-term {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--link-color);
+  font-weight: normal;
+}
+
+.pos-tag {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.entry-card-summary {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.entry-card-footer {
+  margin-top: auto;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.mini-tag {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* WIKTIONARY ARTICLE LAYOUT */
+.wiktionary-view {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Headword */
+.entry-headword-wrap {
+  border-bottom: 1px solid var(--border-wiki);
+  padding-bottom: 0.75rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.entry-headword {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: normal;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+.pronunciation-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-left: 0.75rem;
+}
+
+.ipa-text {
+  font-family: var(--font-sans);
+}
+
+.tts-speaker-btn {
+  color: var(--link-color);
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.tts-speaker-btn:hover {
+  color: var(--link-hover);
+  background: rgba(51, 102, 204, 0.08);
+}
+
+.tts-speaker-btn.playing {
+  color: var(--success);
+  background: rgba(20, 134, 76, 0.12);
+}
+
+@keyframes audioPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.audio-pulse {
+  animation: audioPulse 0.8s infinite ease-in-out;
+}
+
+/* Wiktionary Table of Contents Box */
+.toc-box {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1.25rem;
+  width: fit-content;
+  min-width: 220px;
+  font-size: 0.85rem;
+}
+
+.toc-title {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.4rem;
+}
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.toc-item a {
+  color: var(--link-color);
+}
+
+/* Section Headings */
+.wiki-heading {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: normal;
+  border-bottom: 1px solid var(--border-wiki);
+  padding-bottom: 0.2rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wiki-subheading {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: bold;
+  margin-top: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+/* Numbered Definitions (Classic Wiktionary <ol>) */
+.definition-list {
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.definition-item {
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 1.55;
+}
+
+.definition-context {
+  color: var(--text-muted);
+  font-style: italic;
+  margin-right: 0.3rem;
+}
+
+.signature-box {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  margin: 0.4rem 0;
+  display: inline-block;
+  color: var(--text-main);
+}
+
+/* Wiktionary Quotations / Examples Box */
+.example-box {
+  background: var(--code-bg);
+  border-left: 3px solid var(--border-wiki);
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.example-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.code-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--code-text);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.console-output {
+  background: var(--console-bg);
+  color: var(--console-text);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  margin-top: 0.5rem;
+  white-space: pre-wrap;
+}
+
+/* Parameters Table */
+.wiki-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin: 0.5rem 0;
+  border: 1px solid var(--border-wiki);
+}
+
+.wiki-table th {
+  background: var(--bg-header);
+  border: 1px solid var(--border-wiki);
+  padding: 0.45rem 0.75rem;
+  text-align: left;
+  font-weight: bold;
+}
+
+.wiki-table td {
+  border: 1px solid var(--border-wiki);
+  padding: 0.45rem 0.75rem;
+  vertical-align: top;
+}
+
+/* Usage Notes */
+.usage-notes-box {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid #72777d;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+}
+
+.usage-notes-list {
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* Simple Definition / "In Plain English" Box */
+.simple-definition-box {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.08), rgba(255, 152, 0, 0.06));
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-left: 4px solid #f59e0b;
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+[data-theme='dark'] .simple-definition-box {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.06), rgba(255, 152, 0, 0.04));
+  border-color: rgba(255, 193, 7, 0.2);
+  border-left-color: #d97706;
+}
+
+.simple-definition-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.45rem;
+}
+
+.simple-def-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.simple-def-label {
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #b45309;
+}
+
+[data-theme='dark'] .simple-def-label {
+  color: #fbbf24;
+}
+
+.simple-definition-text {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--text-main);
+  font-family: var(--font-sans);
+}
+
+/* Translations Box (Wiktionary style) */
+.translations-box {
+  border: 1px solid var(--border-wiki);
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.translations-header {
+  background: var(--bg-header);
+  padding: 0.4rem 0.75rem;
+  font-weight: bold;
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--border-wiki);
+}
+
+.translations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  padding: 0.5rem;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.trans-item {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.trans-lang {
+  color: var(--text-muted);
+  width: 85px;
+  flex-shrink: 0;
+}
+
+.trans-val {
+  font-family: var(--font-mono);
+  color: var(--text-main);
+  word-break: break-all;
+}
+
+/* Version History Table */
+.timeline-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  border: 1px solid var(--border-wiki);
+}
+
+.timeline-table th {
+  background: var(--bg-header);
+  border: 1px solid var(--border-wiki);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+}
+
+.timeline-table td {
+  border: 1px solid var(--border-wiki);
+  padding: 0.45rem 0.6rem;
+}
+
+/* Search Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 5rem 1rem;
+}
+
+.modal-dialog {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-wiki);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.modal-search-box {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-wiki);
+  gap: 0.5rem;
+}
+
+.modal-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text-main);
+}
+
+.search-results-list {
+  max-height: 380px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.search-result-item {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--bg-subtle);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-result-item:hover, .search-result-item.selected {
+  background: var(--bg-subtle);
+}
+
+/* Word of the Day (Subtle Wiktionary box) */
+.wotd-box {
+  border: 1px solid var(--border-wiki);
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.wotd-title-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.wotd-term-link {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  color: var(--link-color);
+}
+
+/* Quiz Card */
+.quiz-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-wiki);
+  border-radius: var(--radius-sm);
+  padding: 2rem;
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.quiz-option-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-wiki);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  text-align: left;
+  border-radius: var(--radius-sm);
+}
+
+.quiz-option-btn:hover {
+  background: var(--bg-subtle);
+  border-color: var(--link-color);
+}
+
+.quiz-option-btn.correct {
+  background: #e6f4ea;
+  border-color: #137333;
+  color: #137333;
+}
+
+.quiz-option-btn.wrong {
+  background: #fce8e6;
+  border-color: #c5221f;
+  color: #c5221f;
+}
+
+/* Simple clean action button */
+.wiki-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  border: 1px solid var(--border-wiki);
+  background: var(--bg-surface);
+  color: var(--text-main);
+  border-radius: var(--radius-sm);
+}
+
+.wiki-action-btn:hover {
+  background: var(--bg-subtle);
+}
+
+/* Mobile Category Pills */
+.mobile-category-bar {
+  display: none;
+  gap: 0.4rem;
+  overflow-x: auto;
+  padding: 0.25rem 0.1rem 0.65rem 0.1rem;
+  margin-bottom: 0.75rem;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-category-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-cat-chip {
+  flex-shrink: 0;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-family: var(--font-sans);
+  border-radius: 9999px;
+  border: 1px solid var(--border-wiki);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.mobile-cat-chip:hover {
+  background: var(--bg-subtle);
+  color: var(--text-main);
+}
+
+.mobile-cat-chip.active {
+  background: var(--link-color);
+  color: #ffffff;
+  border-color: var(--link-color);
+  font-weight: 600;
+}
+
+/* Tablet & Mobile Responsiveness */
+@media (max-width: 960px) {
+  .brand-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-inner {
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .brand-logo {
+    font-size: 1.25rem;
+  }
+
+  .brand-icon-text {
+    font-size: 1.35rem;
+  }
+
+  .search-trigger-btn {
+    order: 3;
+    max-width: 100%;
+    width: 100%;
+    margin-top: 0.25rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  .nav-actions {
+    gap: 0.25rem;
+    margin-left: auto;
+  }
+
+  .nav-btn {
+    padding: 0.35rem 0.55rem;
+    font-size: 0.8rem;
+  }
+
+  .main-layout {
+    grid-template-columns: 1fr;
+    padding: 0.75rem 0.5rem;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .mobile-category-bar {
+    display: flex;
+  }
+
+  .wiktionary-view {
+    padding: 1rem 0.85rem;
+  }
+
+  .entry-headword {
+    font-size: 1.7rem;
+    word-break: break-word;
+  }
+
+  .controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .search-input-wrap {
+    max-width: 100%;
+  }
+
+  .entries-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .polysemy-card {
+    padding: 0.85rem;
+  }
+
+  .code-playground-editor {
+    font-size: 0.8rem;
+    min-height: 80px;
+  }
+
+  .toc-box {
+    width: 100%;
+    min-width: unset;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-inner {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .nav-btn {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.75rem;
+  }
+
+  .shortcut-kbd {
+    display: none;
+  }
+
+  .search-placeholder-text {
+    font-size: 0.78rem;
+  }
+
+  .entry-headword-wrap > div {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.4rem;
+  }
+
+  .pronunciation-line {
+    margin-left: 0 !important;
+  }
+
+  .cross-lang-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wiki-subtabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .wiki-subtabs::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   A-Z Alphabetical Index Bar (Wiktionary / Encyclopedia Style)
+   ========================================================================== */
+.az-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0.4rem 0.6rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.az-bar-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+  white-space: nowrap;
+}
+
+.az-bar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 4px;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border-radius: 3px;
+  transition: all 0.15s ease;
+  user-select: none;
+  border: 1px solid transparent;
+}
+
+.az-bar-btn:hover {
+  background: var(--bg-subtle);
+  color: var(--link-color);
+  border-color: var(--border-subtle);
+}
+
+.az-bar-btn.active {
+  background: var(--link-color);
+  color: #ffffff;
+  font-weight: 700;
+  border-color: var(--link-color);
+}
+
+.az-bar-btn.all-btn {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  min-width: 34px;
+}
+
+/* ==========================================================================
+   Interactive Python Playground View
+   ========================================================================== */
+.playground-view-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.playground-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.playground-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.playground-sidebar {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.playground-sidebar-header {
+  padding: 0.75rem 1rem;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+.playground-template-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.playground-template-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: transparent;
+  transition: background 0.15s ease, border-left-color 0.15s ease;
+  border-left: 3px solid transparent;
+}
+
+.playground-template-item:last-child {
+  border-bottom: none;
+}
+
+.playground-template-item:hover {
+  background: var(--bg-subtle);
+}
+
+.playground-template-item.active {
+  background: var(--bg-subtle);
+  border-left-color: var(--link-color);
+}
+
+.template-item-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.3;
+}
+
+.playground-template-item.active .template-item-name {
+  color: var(--link-color);
+}
+
+.template-item-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+  line-height: 1.35;
+}
+
+.playground-main {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--bg-surface);
+}
+
+.playground-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.toolbar-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-active-title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-main);
+}
+
+.toolbar-kbd-hint {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.playground-editor-wrap {
+  position: relative;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.playground-editor-textarea {
+  width: 100%;
+  min-height: 280px;
+  max-height: 520px;
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  background: var(--code-bg);
+  color: var(--code-text);
+  border: none;
+  outline: none;
+  resize: vertical;
+  tab-size: 4;
+}
+
+.playground-console {
+  background: var(--console-bg);
+  color: var(--console-text);
+}
+
+.console-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.console-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+}
+
+.console-time-badge {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.console-body {
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+  min-height: 120px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+@media (max-width: 900px) {
+  .playground-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .playground-template-list {
+    max-height: 220px;
+  }
+}
+
