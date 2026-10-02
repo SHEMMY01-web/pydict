@@ -1,5 +1,5 @@
 """
-PyKtionary — Expanded Programming Techniques Seeder
+PyDict — Expanded Programming Techniques Seeder
 Enriches the database with Python programming techniques under category 'technique'.
 """
 

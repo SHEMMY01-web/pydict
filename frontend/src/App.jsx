@@ -16,7 +16,7 @@ import { Search, Bookmark, ChevronLeft, ChevronRight, BookOpen, Layers } from 'l
 
 export default function App() {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('pyktionary_theme') || 'dark';
+    return localStorage.getItem('pydict_theme') || localStorage.getItem('pyktionary_theme') || 'dark';
   });
 
   const [activeTab, setActiveTab] = useState('lexicon'); // 'lexicon', 'playground', 'quiz', 'bookmarks'
@@ -43,7 +43,7 @@ export default function App() {
   // Apply theme to document root
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('pyktionary_theme', theme);
+    localStorage.setItem('pydict_theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {

@@ -3,7 +3,7 @@ import json
 import os
 from pathlib import Path
 
-DB_PATH = os.environ.get("PYKTIONARY_DB", str(Path(__file__).parent / "pyktionary.db"))
+DB_PATH = os.environ.get("PYDICT_DB", os.environ.get("PYKTIONARY_DB", str(Path(__file__).parent / "pydict.db")))
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)

@@ -32,8 +32,9 @@ app.add_middleware(
 )
 
 CATEGORY_LABELS = {
-    "technique": "Programming Techniques & Idioms",
+    "exception": "Exceptions & Error Types",
     "builtin": "Built-in Functions & Types",
+    "technique": "Programming Techniques & Idioms",
     "keyword": "Language Keywords",
     "dunder": "Dunder / Special Methods",
     "std_lib": "Standard Library Modules",
@@ -168,9 +169,12 @@ def list_entries(
             params.extend([f"[{clean_letter.lower()}{clean_letter.upper()}]*", f"__[{clean_letter.lower()}{clean_letter.upper()}]*"])
 
     if search:
-        query += " AND (term LIKE ? OR short_summary LIKE ? OR tags LIKE ?)"
-        term_pattern = f"%{search}%"
-        params.extend([term_pattern, term_pattern, term_pattern])
+        raw_search = search.strip()
+        no_space_search = raw_search.replace(" ", "").replace("-", "").replace("_", "")
+        term_pattern = f"%{raw_search}%"
+        ns_pattern = f"%{no_space_search}%"
+        query += " AND (term LIKE ? OR slug LIKE ? OR term LIKE ? OR slug LIKE ? OR short_summary LIKE ? OR tags LIKE ?)"
+        params.extend([term_pattern, term_pattern, ns_pattern, ns_pattern, term_pattern, term_pattern])
 
     # Count total
     count_query = query.replace("SELECT *", "SELECT COUNT(*)")
@@ -210,16 +214,32 @@ def search_entries(q: str = Query(..., min_length=1)):
     conn = get_db()
     cursor = conn.cursor()
 
-    # Priority 1: Exact and prefix term match
-    prefix = f"{q.strip()}%"
-    contains = f"%{q.strip()}%"
+    raw_q = q.strip()
+    no_space_q = raw_q.replace(" ", "").replace("-", "").replace("_", "")
+
+    # Priority 1: Exact and prefix term match (with space-normalized variant)
+    prefix_raw = f"{raw_q}%"
+    contains_raw = f"%{raw_q}%"
+    prefix_ns = f"{no_space_q}%"
+    contains_ns = f"%{no_space_q}%"
 
     term_matches = cursor.execute("""
         SELECT * FROM entries 
-        WHERE term LIKE ? OR slug LIKE ?
-        ORDER BY CASE WHEN term = ? THEN 1 WHEN term LIKE ? THEN 2 ELSE 3 END, term
-        LIMIT 10
-    """, (contains, contains, q.strip(), prefix)).fetchall()
+        WHERE term LIKE ? OR slug LIKE ? OR term LIKE ? OR slug LIKE ?
+        ORDER BY CASE 
+            WHEN LOWER(term) = LOWER(?) OR LOWER(slug) = LOWER(?) THEN 1
+            WHEN LOWER(term) = LOWER(?) OR LOWER(slug) = LOWER(?) THEN 2
+            WHEN term LIKE ? OR slug LIKE ? THEN 3
+            WHEN term LIKE ? OR slug LIKE ? THEN 4
+            ELSE 5 END, term
+        LIMIT 15
+    """, (
+        contains_raw, contains_raw, contains_ns, contains_ns,
+        raw_q, raw_q,
+        no_space_q, no_space_q,
+        prefix_raw, prefix_raw,
+        prefix_ns, prefix_ns
+    )).fetchall()
 
     # Priority 2: FTS5 matching for description/concept keywords
     fts_rows = []
@@ -541,7 +561,7 @@ def download_apk():
         return FileResponse(
             APK_FILE,
             media_type="application/vnd.android.package-archive",
-            filename="PyKtionary-debug.apk"
+            filename="PyDict-debug.apk"
         )
     raise HTTPException(status_code=404, detail="APK has not been built yet.")
 

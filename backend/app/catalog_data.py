@@ -245,7 +245,7 @@ print(f"Has elevated privilege? {has_elevated}")"""
 import tempfile
 
 with tempfile.NamedTemporaryFile(mode="w+", delete=False, encoding="utf-8") as f:
-    f.write("DEBUG=True\\nPORT=8000\\nAPP_NAME=PyKtionary")
+    f.write("DEBUG=True\\nPORT=8000\\nAPP_NAME=PyDict")
     filepath = f.name
 
 # Read it back safely
@@ -678,92 +678,6 @@ print("Issued:", ticket_issuer())"""
     }
 }
 
-# Plain-English definitions and realistic code examples for common built-in Exceptions
-EXCEPTION_CATALOG = {
-    "KeyError": {
-        "simple_definition": "`KeyError` happens when you try to look up a key in a dictionary that doesn't exist. You can prevent it with `dict.get(key, default)` or catch it with `try/except`.",
-        "title": "Real-world: Safe Dictionary Lookup with Fallback",
-        "code": """# Real-world: Handling missing keys in an API response
-user_data = {"id": 101, "name": "Sarah"}
+# Import full comprehensive 69-exception catalog
+from app.exception_catalog import EXCEPTION_CATALOG
 
-try:
-    role = user_data["role"]
-except KeyError:
-    role = "guest"  # Safe fallback
-    print("KeyError caught: 'role' key was missing, defaulted to 'guest'.")
-
-print(f"User: {user_data['name']} | Role: {role}")"""
-    },
-    "ValueError": {
-        "simple_definition": "`ValueError` happens when a function receives an argument that has the right type, but an inappropriate or invalid value (like trying to convert `'abc'` to an `int`).",
-        "title": "Real-world: Validating User Form Inputs",
-        "code": """# Real-world: Catching invalid numerical input from a web form
-raw_input = "not_a_number"
-
-try:
-    age = int(raw_input)
-except ValueError as err:
-    print(f"ValueError: Could not convert '{raw_input}' to integer.")
-    age = 18  # Default minimum age
-
-print(f"Proceeding with age: {age}")"""
-    },
-    "TypeError": {
-        "simple_definition": "`TypeError` happens when an operation or function is applied to an object of an inappropriate type (like trying to add a number and a string).",
-        "title": "Real-world: Catching Incompatible Data Types",
-        "code": """# Real-world: Safely adding price and quantity across string/number types
-def compute_line_total(price, quantity):
-    try:
-        return price * quantity
-    except TypeError:
-        # Convert strings if needed
-        return float(price) * int(quantity)
-
-print("Total 1:", compute_line_total(19.99, 2))
-print("Total 2:", compute_line_total("19.99", "3"))"""
-    },
-    "IndexError": {
-        "simple_definition": "`IndexError` happens when you try to access an item from a list or sequence at an index number that is out of range (like grabbing item 10 from a 3-item list).",
-        "title": "Real-world: Safely Reading Command-Line Arguments",
-        "code": """# Real-world: Safely getting an element from a list with bounds check
-commands = ["start", "--verbose"]
-
-try:
-    mode = commands[2]
-except IndexError:
-    mode = "--normal"  # Default fallback
-    print("IndexError: Missing third argument, defaulted to '--normal'.")
-
-print("Run mode:", mode)"""
-    },
-    "ZeroDivisionError": {
-        "simple_definition": "`ZeroDivisionError` happens when you attempt to divide a number by zero or perform a modulo (`%`) by zero, which is mathematically undefined.",
-        "title": "Real-world: Calculating Click-Through Rates (CTR)",
-        "code": """# Real-world: Safely calculating conversion rates when visits are zero
-clicks = 15
-impressions = 0
-
-try:
-    ctr = (clicks / impressions) * 100
-except ZeroDivisionError:
-    ctr = 0.0
-    print("ZeroDivisionError: No impressions recorded yet, CTR is 0.0%")
-
-print(f"Conversion rate: {ctr:.1f}%")"""
-    },
-    "FileNotFoundError": {
-        "simple_definition": "`FileNotFoundError` happens when you try to open or delete a file that does not exist at the specified path.",
-        "title": "Real-world: Loading Optional Config File with Default",
-        "code": """# Real-world: Gracefully falling back when a config file is absent
-import json
-
-try:
-    with open("app_settings.json", "r") as f:
-        config = json.load(f)
-except FileNotFoundError:
-    config = {"theme": "dark", "version": "1.0.0"}
-    print("FileNotFoundError: app_settings.json not found. Using default config.")
-
-print("Loaded config:", config)"""
-    }
-}

@@ -95,7 +95,7 @@ export default function BuildMonitorView() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
           <div>
             <h1 style={{ fontFamily: 'Linux Libertine, Georgia, serif', fontSize: '28px', margin: '0 0 6px 0', color: 'var(--wiki-text, #202122)' }}>
-              PyKtionary APK Build & Package Center
+              PyDict APK Build & Package Center
             </h1>
             <div style={{ fontSize: '13px', color: 'var(--wiki-muted, #54595d)' }}>
               Local Android Compilation Pipeline &bull; Option 2 (On-Device Build)
@@ -246,7 +246,7 @@ export default function BuildMonitorView() {
         }}>
           <div>
             <div style={{ color: '#166534', fontWeight: 'bold', fontSize: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <CheckCircle size={20} /> PyKtionary APK Generated Successfully!
+              <CheckCircle size={20} /> PyDict APK Generated Successfully!
             </div>
             <div style={{ fontSize: '13px', color: '#15803d', marginTop: '4px' }}>
               File: <code style={{ backgroundColor: '#dcfce7', padding: '2px 6px', borderRadius: '3px' }}>app-debug.apk</code> ({status?.apk_size_mb || '28.4'} MB)
@@ -254,7 +254,7 @@ export default function BuildMonitorView() {
           </div>
           <a 
             href="/api/download-apk" 
-            download="PyKtionary-debug.apk"
+            download="PyDict-debug.apk"
             style={{
               display: 'inline-flex',
               alignItems: 'center',

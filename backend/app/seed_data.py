@@ -1002,7 +1002,7 @@ def seed_database():
 
     conn.commit()
     conn.close()
-    print(f"Successfully seeded {len(ENTRIES)} PyKtionary entries with simple definitions and real-world examples.")
+    print(f"Successfully seeded {len(ENTRIES)} PyDict entries with simple definitions and real-world examples.")
 
 if __name__ == "__main__":
     seed_database()

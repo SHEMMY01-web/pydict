@@ -111,27 +111,29 @@ def extract_builtins():
                 sig_str = lines[0]
                 short_summary = lines[1] if len(lines) > 1 else short_summary
 
-        pos = "Built-in Type" if is_cls else "Built-in Function"
+        is_exc = is_cls and issubclass(obj, BaseException)
+        pos = "Built-in Exception" if is_exc else ("Built-in Type" if is_cls else "Built-in Function")
+        category = "exception" if is_exc else "builtin"
         full_desc = raw_doc if raw_doc else f"`{name}` is a standard Python built-in."
         
         # Check rich catalog first, else generate beginner-friendly definition
-        if name in BUILTIN_CATALOG:
+        if is_exc and name in EXCEPTION_CATALOG:
+            simple_def = EXCEPTION_CATALOG[name]["simple_definition"]
+            example_title = EXCEPTION_CATALOG[name]["title"]
+            example_code = EXCEPTION_CATALOG[name]["code"]
+            gotchas = EXCEPTION_CATALOG[name].get("gotchas", [f"Catching `{name}` allows graceful handling of this condition."])
+            base_name = obj.__base__.__name__ if hasattr(obj, '__base__') and obj.__base__ else "Exception"
+            sig_str = f"class {name}({base_name}): ..."
+        elif name in BUILTIN_CATALOG:
             simple_def = BUILTIN_CATALOG[name]["simple_definition"]
             example_title = BUILTIN_CATALOG[name]["title"]
             example_code = BUILTIN_CATALOG[name]["code"]
+            gotchas = BUILTIN_GOTCHAS.get(name, [f"Standard {pos.lower()} available in all Python execution contexts without importing."])
         elif name in EXCEPTION_CATALOG:
             simple_def = EXCEPTION_CATALOG[name]["simple_definition"]
             example_title = EXCEPTION_CATALOG[name]["title"]
             example_code = EXCEPTION_CATALOG[name]["code"]
-        elif is_cls and ("Error" in name or "Exception" in name or "Warning" in name):
-            simple_def = f"`{name}` is a standard Python built-in exception/warning class. It gets raised when this specific issue occurs, and can be caught and handled with `try / except {name}:`."
-            example_title = f"Handling {name}"
-            example_code = f"""# Real-world: Handling {name}
-try:
-    # Protected code block
-    pass
-except {name} as err:
-    print(f'Caught {name}: {{err}}')"""
+            gotchas = EXCEPTION_CATALOG[name].get("gotchas", [f"Standard exception class in Python."])
         elif is_cls:
             simple_def = f"`{name}` is a built-in Python type (like a blueprint) that you can use to create {name.lower()} objects. You don't need to import anything — it's always available."
             example_title = f"Using {name}"
@@ -139,13 +141,14 @@ except {name} as err:
 instance = {name}()
 print('Created:', instance)
 print('Type:', type(instance))"""
+            gotchas = BUILTIN_GOTCHAS.get(name, [f"Standard {pos.lower()} available in all Python execution contexts without importing."])
         else:
             simple_def = f"`{name}()` is a built-in function that comes with Python — no imports needed. {short_summary}"
             example_title = f"Using {name}()"
             example_code = f"""# Real-world usage of {name}
 print('Callable built-in:', {name})"""
+            gotchas = BUILTIN_GOTCHAS.get(name, [f"Standard {pos.lower()} available in all Python execution contexts without importing."])
 
-        gotchas = BUILTIN_GOTCHAS.get(name, [f"Standard {pos.lower()} available in all Python execution contexts without importing."])
         cross = CROSS_LANG_BUILTINS.get(name, {})
 
         # Version evolution timeline for notable built-ins
@@ -157,6 +160,13 @@ print('Callable built-in:', {name})"""
                 {"version": "3.7", "change_type": "feature", "title": "Insertion Order Guaranteed", "description": "Dictionary key insertion order became an official language specification guarantee for all Python implementations."},
                 {"version": "3.9", "change_type": "pep", "title": "PEP 584 Dictionary Merge Operators", "description": "Added union operators | and |= to merge dictionaries.", "pep": "PEP 584"}
             ]
+        elif name == "ExceptionGroup":
+            timeline = [
+                {"version": "3.11", "change_type": "pep", "title": "PEP 654 Exception Groups", "description": "Introduced ExceptionGroup and except* syntax for handling concurrent errors.", "pep": "PEP 654"}
+            ]
+
+        doc_url = f"https://docs.python.org/3/library/exceptions.html#{name}" if is_exc else f"https://docs.python.org/3/library/functions.html#{name}"
+        tags_list = ["exception", "error", "built-in", name.lower()] if is_exc else ["builtins", "core", "functions" if not is_cls else "types"]
 
         cursor.execute("""
         INSERT INTO entries (
@@ -170,7 +180,7 @@ print('Callable built-in:', {name})"""
             name,
             pos,
             f"/{name}/",
-            "builtin",
+            category,
             sig_str,
             short_summary,
             simple_def,
@@ -180,10 +190,10 @@ print('Callable built-in:', {name})"""
             "2.0",
             None,
             "Python Built-in",
-            f"https://docs.python.org/3/library/functions.html#{name}",
+            doc_url,
             json.dumps(gotchas),
             json.dumps(cross),
-            json.dumps(["builtins", "core", "functions"]),
+            json.dumps(tags_list),
             json.dumps([]),
             json.dumps(timeline)
         ))
@@ -194,10 +204,11 @@ print('Callable built-in:', {name})"""
         """, (slug, example_title, example_code, None, 1))
 
         # FTS index
+        fts_tags = " ".join(tags_list)
         cursor.execute("""
         INSERT INTO entries_fts (slug, term, short_summary, full_description, tags, category)
         VALUES (?, ?, ?, ?, ?, ?)
-        """, (slug, name, short_summary, full_desc, "builtins core functions", "builtin"))
+        """, (slug, name, short_summary, full_desc, fts_tags, category))
         existing_slugs.add(slug)
 
     # 2. Process Core Keywords
@@ -315,7 +326,7 @@ print('Callable built-in:', {name})"""
             elif mod_name == "re" and member_name == "compile":
                 code_snippet = "import re\npattern = re.compile(r'\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b')\nprint('Compiled regex:', pattern)"
             elif mod_name == "json" and member_name == "dumps":
-                code_snippet = "import json\ndata = {'title': 'PyKtionary', 'tags': ['python', 'lexicon'], 'stars': 100}\nprint(json.dumps(data, indent=2))"
+                code_snippet = "import json\ndata = {'title': 'PyDict', 'tags': ['python', 'lexicon'], 'stars': 100}\nprint(json.dumps(data, indent=2))"
             elif mod_name == "pathlib" and member_name == "Path":
                 code_snippet = "from pathlib import Path\np = Path('/usr/local/bin')\nprint('Parent:', p.parent)\nprint('Name:', p.name)\nprint('Suffixes:', p.suffixes)"
             elif mod_name == "random" and member_name == "choice":

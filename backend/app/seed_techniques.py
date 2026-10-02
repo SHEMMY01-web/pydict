@@ -1,13 +1,13 @@
 """
-PyKtionary — Advanced Python Techniques & Syntax Concepts Seeder
-Enriches the database with core Python programming techniques in strict Wiktionary Vector format.
+PyDict — Advanced Python Techniques & Syntax Concepts Seeder
+Enriches the database with core Python programming techniques in classical lexicographical reference format.
 """
 
 import json
 import sqlite3
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent / "pyktionary.db"
+DB_PATH = Path(__file__).parent / "pydict.db"
 
 TECHNIQUES = [
     {
