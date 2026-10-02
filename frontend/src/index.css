@@ -718,6 +718,89 @@ button {
   color: var(--code-text);
 }
 
+/* Terminal Traceback Box */
+.terminal-traceback-box {
+  background: #18181b;
+  color: #f87171;
+  border: 1px solid #27272a;
+  border-left: 3px solid #ef4444;
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+
+.terminal-traceback-box code {
+  color: inherit;
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  white-space: pre;
+}
+
+/* Wiki Code Block */
+.wiki-code-block {
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--border-wiki);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+
+.wiki-code-block code {
+  color: inherit;
+  background: transparent;
+  padding: 0;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  white-space: pre;
+}
+
+/* Wiki Markdown Explanations */
+.wiki-markdown-body {
+  margin-top: 0.75rem;
+  color: var(--text-main);
+  line-height: 1.65;
+  font-size: 0.92rem;
+}
+
+.wiki-markdown-body h3,
+.wiki-markdown-body h4 {
+  font-family: var(--font-serif);
+  color: var(--text-main);
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+  font-size: 1.1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0.25rem;
+}
+
+.wiki-markdown-body p {
+  margin: 0.5rem 0;
+}
+
+.wiki-markdown-body ul,
+.wiki-markdown-body ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.wiki-markdown-body li {
+  margin-bottom: 0.35rem;
+}
+
 
 /* Translations Box (Wiktionary style) */
 .translations-box {

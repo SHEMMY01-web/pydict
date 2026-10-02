@@ -7,9 +7,10 @@ import { fetchEntry, toggleBookmark } from '../services/api';
 import { runPythonCode } from '../services/pyodide';
 import ContributeModal from './ContributeModal';
 
-function renderFormattedDefinition(text) {
+function renderFormattedInline(text) {
   if (!text) return null;
-  const parts = text.split(/(`[^`]+`)/g);
+  const regex = /(`[^`]+`|\*\*[^*]+\*\*)/g;
+  const parts = text.split(regex);
   return parts.map((part, index) => {
     if (part.startsWith('`') && part.endsWith('`') && part.length > 2) {
       return (
@@ -18,8 +19,159 @@ function renderFormattedDefinition(text) {
         </code>
       );
     }
+    if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+      return (
+        <strong key={index} style={{ fontWeight: 600 }}>
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
     return part;
   });
+}
+
+function renderFormattedDefinition(text) {
+  return renderFormattedInline(text);
+}
+
+function renderMarkdownDescription(content) {
+  if (!content) return null;
+
+  const rawLines = content.split('\n');
+  const elements = [];
+  let currentList = null;
+  let inCodeBlock = false;
+  let codeBuffer = [];
+  let codeLang = '';
+
+  const flushList = () => {
+    if (currentList) {
+      if (currentList.type === 'ul') {
+        elements.push(
+          <ul key={`ul-${elements.length}`}>
+            {currentList.items.map((item, idx) => (
+              <li key={idx}>{renderFormattedInline(item)}</li>
+            ))}
+          </ul>
+        );
+      } else {
+        elements.push(
+          <ol key={`ol-${elements.length}`}>
+            {currentList.items.map((item, idx) => (
+              <li key={idx}>{renderFormattedInline(item)}</li>
+            ))}
+          </ol>
+        );
+      }
+      currentList = null;
+    }
+  };
+
+  for (let i = 0; i < rawLines.length; i++) {
+    const line = rawLines[i];
+
+    if (line.trim().startsWith('```')) {
+      if (!inCodeBlock) {
+        flushList();
+        inCodeBlock = true;
+        codeLang = line.trim().slice(3).trim();
+        codeBuffer = [];
+      } else {
+        inCodeBlock = false;
+        const codeText = codeBuffer.join('\n');
+        const isTraceback = codeText.includes('Traceback (most recent call last):') || codeLang === 'text';
+        elements.push(
+          <pre
+            key={`code-${elements.length}`}
+            className={isTraceback ? 'terminal-traceback-box' : 'wiki-code-block'}
+          >
+            <code>{codeText}</code>
+          </pre>
+        );
+        codeBuffer = [];
+        codeLang = '';
+      }
+      continue;
+    }
+
+    if (inCodeBlock) {
+      codeBuffer.push(line);
+      continue;
+    }
+
+    if (line.startsWith('#### ')) {
+      flushList();
+      elements.push(
+        <h5 key={`h5-${elements.length}`} style={{ margin: '0.85rem 0 0.35rem', fontWeight: 600 }}>
+          {renderFormattedInline(line.slice(5).trim())}
+        </h5>
+      );
+      continue;
+    }
+    if (line.startsWith('### ')) {
+      flushList();
+      elements.push(
+        <h4 key={`h4-${elements.length}`}>
+          {renderFormattedInline(line.slice(4).trim())}
+        </h4>
+      );
+      continue;
+    }
+    if (line.startsWith('## ')) {
+      flushList();
+      elements.push(
+        <h3 key={`h3-${elements.length}`}>
+          {renderFormattedInline(line.slice(3).trim())}
+        </h3>
+      );
+      continue;
+    }
+
+    const bulletMatch = line.match(/^(\s*)[-*]\s+(.*)$/);
+    if (bulletMatch) {
+      if (!currentList || currentList.type !== 'ul') {
+        flushList();
+        currentList = { type: 'ul', items: [] };
+      }
+      currentList.items.push(bulletMatch[2]);
+      continue;
+    }
+
+    const numberMatch = line.match(/^(\s*)\d+\.\s+(.*)$/);
+    if (numberMatch) {
+      if (!currentList || currentList.type !== 'ol') {
+        flushList();
+        currentList = { type: 'ol', items: [] };
+      }
+      currentList.items.push(numberMatch[2]);
+      continue;
+    }
+
+    if (!line.trim()) {
+      flushList();
+      continue;
+    }
+
+    flushList();
+    elements.push(
+      <p key={`p-${elements.length}`}>
+        {renderFormattedInline(line)}
+      </p>
+    );
+  }
+
+  flushList();
+
+  if (inCodeBlock && codeBuffer.length > 0) {
+    const codeText = codeBuffer.join('\n');
+    elements.push(
+      <pre key={`code-${elements.length}`} className="terminal-traceback-box">
+        <code>{codeText}</code>
+      </pre>
+    );
+  }
+
+  return <div className="wiki-markdown-body">{elements}</div>;
 }
 
 function formatCode(codeStr) {
@@ -307,45 +459,54 @@ export default function EntryDetail({ slug, onBack, onSelectEntry, onToggleBookm
 
         {/* If Polysemic (Multiple Senses) */}
         {hasSenses ? (
-          <ol className="definition-list">
-            {entry.senses.map((sense) => (
-              <li key={sense.sense_number} className="definition-item">
-                <span className="definition-context">({sense.part_of_speech.toLowerCase()})</span>
-                <strong>{sense.summary}</strong>
-                {sense.signature && (
-                  <div>
-                    <code style={{ fontSize: '0.8rem', background: 'var(--bg-subtle)', padding: '2px 5px' }}>
-                      {sense.signature}
-                    </code>
-                  </div>
-                )}
-                {sense.description && (
-                  <p style={{ margin: '0.25rem 0', color: 'var(--text-secondary)' }}>
-                    {sense.description}
-                  </p>
-                )}
-                {sense.example_code && (
-                  <CleanCodeExample 
-                    title={`Example (Sense ${sense.sense_number})`} 
-                    initialCode={sense.example_code} 
-                  />
-                )}
-              </li>
-            ))}
-          </ol>
+          <>
+            <ol className="definition-list">
+              {entry.senses.map((sense) => (
+                <li key={sense.sense_number} className="definition-item">
+                  <span className="definition-context">({sense.part_of_speech.toLowerCase()})</span>
+                  <strong>{sense.summary}</strong>
+                  {sense.signature && (
+                    <div>
+                      <code style={{ fontSize: '0.8rem', background: 'var(--bg-subtle)', padding: '2px 5px' }}>
+                        {sense.signature}
+                      </code>
+                    </div>
+                  )}
+                  {sense.description && (
+                    <p style={{ margin: '0.25rem 0', color: 'var(--text-secondary)' }}>
+                      {sense.description}
+                    </p>
+                  )}
+                  {sense.example_code && (
+                    <CleanCodeExample 
+                      title={`Example (Sense ${sense.sense_number})`} 
+                      initialCode={sense.example_code} 
+                    />
+                  )}
+                </li>
+              ))}
+            </ol>
+            {entry.full_description && (
+              <div style={{ marginTop: '0.85rem' }}>
+                {renderMarkdownDescription(entry.full_description)}
+              </div>
+            )}
+          </>
         ) : (
           /* Single Sense Standard Definition */
-          <ol className="definition-list">
-            <li className="definition-item">
-              <span className="definition-context">(programming)</span>
-              <span>{entry.short_summary}</span>
-              {entry.full_description && (
-                <div style={{ marginTop: '0.5rem', color: 'var(--text-secondary)', whiteSpace: 'pre-line' }}>
-                  {entry.full_description}
-                </div>
-              )}
-            </li>
-          </ol>
+          <>
+            <ol className="definition-list">
+              <li className="definition-item">
+                <span className="definition-context">(programming)</span>
+                <span>{entry.short_summary}</span>
+              </li>
+            </ol>
+            {entry.full_description && (
+              <div style={{ marginTop: '0.85rem' }}>
+                {renderMarkdownDescription(entry.full_description)}
+              </div>
+            )}
+          </>
         )}
 
         {/* Simple Definition / Plain-Language Breakdown */}

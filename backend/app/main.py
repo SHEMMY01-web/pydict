@@ -33,6 +33,7 @@ app.add_middleware(
 
 CATEGORY_LABELS = {
     "exception": "Exceptions & Error Types",
+    "phrase": "Idioms, Phrases & Cliches",
     "builtin": "Built-in Functions & Types",
     "technique": "Programming Techniques & Idioms",
     "keyword": "Language Keywords",
